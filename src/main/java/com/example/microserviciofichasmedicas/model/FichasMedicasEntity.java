@@ -20,18 +20,17 @@ import lombok.Setter;
 public class FichasMedicasEntity {
     @Id
     @Column(name = "id_consulta_medica")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idConsultaMedica;
     @Column(name = "id_paciente")
     private int idPaciente;
-    @Column(name = "id_medico")
-    private int idMedico;
-
-    @Column(name = "id_especialidad")
-    private int idEspecialidad;
-
-    @Column(name = "id_consultorio")
-    private int idConsultorio;
-
     @Column(name = "codigo_ficha_medica")
     private String codigoFichaMedica;
+    @Column(name = "id_turno_atencion_medica")
+    private int idTurnoAtencionMedica;
+    @Column(name = "numero_ficha")
+    private int numeroFicha;
+
+
+  
 }
