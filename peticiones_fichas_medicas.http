@@ -1,0 +1,4 @@
+###
+GET http://localhost:8084/api/microservicio-fichas-medicas/fichas-medicas/medico/1
+###
+GET http://localhost:8084/api/microservicio-fichas-medicas/fichas-medicas/detalle/paciente/1

@@ -64,13 +64,24 @@ public class PeticionFichasMedicas {
     public @ResponseBody List<FichasMedicasEntity> controllerMethod(@PathVariable int idPaciente) {
         return fichasMedicasRepositoryJPA.findByIdPaciente(idPaciente);
     }
+    @GetMapping("/detalle/paciente/{idPaciente}")
+    @PermitAll
+    public @ResponseBody List<Object> obtenerFichasMedicasPacienteDetalle(@PathVariable int idPaciente) {
+        return fichasMedicasRepositoryJPA.obtenerFichasMedicasPorIdPaciente(idPaciente);
+    }
     @GetMapping("/info-container")
     public @ResponseBody String obtenerInformacionContenedor() {
         return "microservicio historias clinicas:" + containerMetadataService.retrieveContainerMetadataInfo();
     }
     @GetMapping("/{idFichaMedica}")
+    @PermitAll
     public @ResponseBody List<Object>  obtenerInformacionContenedor(@PathVariable int idFichaMedica) {
         return fichasMedicasRepositoryJPA.obtenerDetalleFichaMedica(idFichaMedica);
+    }
+    @GetMapping("/medico/{idMedico}")
+    @PermitAll
+    public @ResponseBody List<Object>  obtenerFichasMedicaPorIdMedico(@PathVariable int idMedico) {
+        return fichasMedicasRepositoryJPA.obtenerFichasMedicasPorIdMedico(idMedico);
     }
     @DeleteMapping("/{idFichaMedica}")
     @PermitAll
