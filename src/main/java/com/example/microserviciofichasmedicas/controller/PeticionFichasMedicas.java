@@ -48,7 +48,7 @@ public class PeticionFichasMedicas {
     // }
     @PostMapping()
     @PermitAll
-    public @ResponseBody String registrarReserva(@RequestBody ReservaFichaMedicaDto datos){
+    public @ResponseBody ReservaFichaMedicaDto registrarReserva(@RequestBody ReservaFichaMedicaDto datos){
         FichasMedicasEntity fichasMedicasEntity = new FichasMedicasEntity();
         fichasMedicasEntity.setIdTurnoAtencionMedica(datos.getIdTurnoAtencionMedica());
         PacienteEntity paciente=pacientesRepositoryJPA.findByEmail(datos.getEmail())
@@ -57,7 +57,7 @@ public class PeticionFichasMedicas {
         fichasMedicasEntity.setCodigoFichaMedica("nuevo");
         fichasMedicasEntity.setNumeroFicha(1);
         fichasMedicasRepositoryJPA.save(fichasMedicasEntity);
-        return "Ok";
+        return datos;
     }
     @GetMapping("/paciente/{idPaciente}")
     @PermitAll
@@ -71,7 +71,7 @@ public class PeticionFichasMedicas {
     }
     @GetMapping("/info-container")
     public @ResponseBody String obtenerInformacionContenedor() {
-        return "microservicio historias clinicas:" + containerMetadataService.retrieveContainerMetadataInfo();
+        return "microservicio fichas medicas:" + containerMetadataService.retrieveContainerMetadataInfo();
     }
     @GetMapping("/{idFichaMedica}")
     @PermitAll

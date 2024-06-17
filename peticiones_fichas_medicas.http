@@ -1,4 +1,18 @@
 ###
 GET http://localhost:8084/api/microservicio-fichas-medicas/fichas-medicas/medico/1
 ###
-GET http://localhost:8084/api/microservicio-fichas-medicas/fichas-medicas/detalle/paciente/1
+GET http://localhost:8084/api/microservicio-fichas-medicas/fichas-medicas/1
+###
+POST http://localhost:8084/api/microservicio-fichas-medicas/fichas-medicas
+Content-Type: application/json
+
+{
+    "email":"carlossanchez98392847@gmail.com",
+    "idTurnoAtencionMedica":1
+}
+
+###
+DELETE http://localhost:8084/api/microservicio-fichas-medicas/fichas-medicas/5
+###
+GET http://localhost:8084/api/microservicio-fichas-medicas/fichas-medicas/paciente/1
+
