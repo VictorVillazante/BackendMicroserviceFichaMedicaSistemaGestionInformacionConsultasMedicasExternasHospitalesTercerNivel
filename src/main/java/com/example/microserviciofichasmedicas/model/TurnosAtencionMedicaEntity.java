@@ -1,7 +1,5 @@
 package com.example.microserviciofichasmedicas.model;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -15,6 +13,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import java.time.LocalTime;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -22,23 +22,23 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-@Table(name = "consultas_medicas")
-public class FichasMedicasEntity {
+@Table(name = "turnos_atencion_medica")
+public class TurnosAtencionMedicaEntity {
     @Id
-    @Column(name = "id_consulta_medica")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idConsultaMedica;
+    @Column(name = "id_turno_atencion_medica")
+    private int idTurnoAtencionMedica;
+    @Column(name = "numero_fichas_disponible")
+    private int numeroFichasDisponible;
+    @Column(name = "fecha")
+    private Date fecha;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_paciente", nullable = false)
-    private UsuarioEntity paciente;
-    @Column(name = "codigo_ficha_medica")
-    private String codigoFichaMedica;
+    @JoinColumn(name = "id_consultorio", nullable = false)
+    private ConsultorioEntity consultorio;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_turno_atencion_medica", nullable = false)
-    private TurnosAtencionMedicaEntity turnosAtencionMedica;
-    @Column(name = "numero_ficha")
-    private int numeroFicha;
-
-
-  
+    @JoinColumn(name = "id_turno", nullable = false)
+    private TurnoEntity turno;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_medico", nullable = false)
+    private UsuarioEntity medico;
 }

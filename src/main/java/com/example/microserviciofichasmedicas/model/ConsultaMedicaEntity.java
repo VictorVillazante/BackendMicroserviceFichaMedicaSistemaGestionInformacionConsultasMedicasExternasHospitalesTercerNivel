@@ -15,7 +15,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 @Getter
 @Setter
 @NoArgsConstructor
@@ -23,7 +22,7 @@ import lombok.Setter;
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name = "consultas_medicas")
-public class FichasMedicasEntity {
+public class ConsultaMedicaEntity {
     @Id
     @Column(name = "id_consulta_medica")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,7 +34,7 @@ public class FichasMedicasEntity {
     private String codigoFichaMedica;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_turno_atencion_medica", nullable = false)
-    private TurnosAtencionMedicaEntity turnosAtencionMedica;
+    private TurnosAtencionMedicaEntity turnoAtencionMedica;
     @Column(name = "numero_ficha")
     private int numeroFicha;
 
