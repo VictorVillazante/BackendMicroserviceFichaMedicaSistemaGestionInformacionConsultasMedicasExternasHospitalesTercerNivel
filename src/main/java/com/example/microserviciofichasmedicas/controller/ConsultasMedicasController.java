@@ -92,7 +92,7 @@ public class ConsultasMedicasController {
     @PostMapping
     public ResponseEntity<ConsultaMedicaDto> crearConsultaMedica(@RequestBody ConsultaMedicaDto consultaMedicaDto) {
         ConsultaMedicaDto consultaCreada = consultasMedicasService.crearConsultaMedica(consultaMedicaDto);
-        return ResponseEntity.ok().body(consultaCreada);
+        return new ResponseEntity<>(consultaCreada,HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{idConsultaMedica}")

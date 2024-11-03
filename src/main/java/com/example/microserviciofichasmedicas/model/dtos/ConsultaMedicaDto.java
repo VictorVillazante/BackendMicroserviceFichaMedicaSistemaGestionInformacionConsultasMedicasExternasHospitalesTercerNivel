@@ -8,7 +8,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.Accessors;
+
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 @Getter @Setter
 @AllArgsConstructor
@@ -25,13 +28,15 @@ public class ConsultaMedicaDto {
     String nombreConsultorio;
     int idTurno;
     String nombreTurno;
-    LocalTime horaInicio;
-    LocalTime horaFin;
+    String horaInicio;
+    String horaFin;
     int idMedico;
     String nombreMedico;
     int idEspecialidad;
     String nombreEspecialidad;
     public ConsultaMedicaDto convertirConsultaMedicaEntityConsultaMedicaDto(ConsultaMedicaEntity consultaMedicaEntity){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+
         ConsultaMedicaDto consultaMedicaDto=new ConsultaMedicaDto();
         consultaMedicaDto.setIdConsultaMedica(consultaMedicaEntity.getIdConsultaMedica());
         consultaMedicaDto.setCodigoFichaMedica(consultaMedicaEntity.getCodigoFichaMedica());
@@ -44,8 +49,8 @@ public class ConsultaMedicaDto {
         consultaMedicaDto.setNombreConsultorio(consultaMedicaEntity.getTurnoAtencionMedica().getConsultorio().getNombre());
         consultaMedicaDto.setIdTurno(consultaMedicaEntity.getTurnoAtencionMedica().getTurno().getIdTurno());
         consultaMedicaDto.setNombreTurno(consultaMedicaEntity.getTurnoAtencionMedica().getTurno().getNombre());
-        consultaMedicaDto.setHoraInicio(consultaMedicaEntity.getTurnoAtencionMedica().getTurno().getHoraInicio());
-        consultaMedicaDto.setHoraFin(consultaMedicaEntity.getTurnoAtencionMedica().getTurno().getHoraFin());
+        consultaMedicaDto.setHoraInicio(consultaMedicaEntity.getTurnoAtencionMedica().getTurno().getHoraInicio().format(formatter));
+        consultaMedicaDto.setHoraFin(consultaMedicaEntity.getTurnoAtencionMedica().getTurno().getHoraFin().format(formatter));
         consultaMedicaDto.setIdMedico(consultaMedicaEntity.getTurnoAtencionMedica().getMedico().getIdUsuario());
         consultaMedicaDto.setNombreMedico(consultaMedicaEntity.getTurnoAtencionMedica().getMedico().getNombres()+" "+consultaMedicaEntity.getTurnoAtencionMedica().getMedico().getApellidoPaterno()+" "+consultaMedicaEntity.getTurnoAtencionMedica().getMedico().getApellidoMaterno());
         consultaMedicaDto.setIdEspecialidad(consultaMedicaEntity.getTurnoAtencionMedica().getConsultorio().getEspecialidad().getIdEspecialidad());
