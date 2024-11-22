@@ -37,7 +37,8 @@ public class ConsultaMedicaEntity {
     private TurnosAtencionMedicaEntity turnoAtencionMedica;
     @Column(name = "numero_ficha")
     private int numeroFicha;
-
+    @Column(name = "estado")
+    private String estado;
 
   
 }

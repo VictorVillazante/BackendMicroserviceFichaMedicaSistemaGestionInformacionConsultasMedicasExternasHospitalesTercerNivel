@@ -13,6 +13,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Date;
 
@@ -31,7 +33,7 @@ public class TurnosAtencionMedicaEntity {
     @Column(name = "numero_fichas_disponible")
     private int numeroFichasDisponible;
     @Column(name = "fecha")
-    private Date fecha;
+    private LocalDate fecha;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_consultorio", nullable = false)
     private ConsultorioEntity consultorio;

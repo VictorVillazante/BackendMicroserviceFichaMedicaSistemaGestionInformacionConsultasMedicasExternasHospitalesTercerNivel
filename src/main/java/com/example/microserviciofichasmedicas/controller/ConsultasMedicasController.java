@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -61,41 +62,68 @@ public class ConsultasMedicasController {
     // }
     @GetMapping("/paciente/{idPaciente}")
     @PermitAll
-    public ResponseEntity<List<ConsultaMedicaDto>> controllerMethod(@PathVariable int idPaciente) {
+    public ResponseEntity<List<ConsultaMedicaDto>> controllerMethod(@PathVariable int idPaciente,@RequestParam(required = false) String fechaInicio,@RequestParam(required = false) String fechaFin,@RequestParam(required = false) Integer page,@RequestParam(required = false) Integer size) {
         try{
-            List<ConsultaMedicaDto> consultasMedicas = consultasMedicasService.obtenerConsultasMedicasPaciente(idPaciente);
+            List<ConsultaMedicaDto> consultasMedicas = consultasMedicasService.obtenerConsultasMedicasPaciente(idPaciente,fechaInicio,fechaFin,page,size);
             return new ResponseEntity<>(consultasMedicas,HttpStatus.OK);
         }catch(Exception e){
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }   
     }
-    @GetMapping("/detalle/paciente/{idPaciente}")
-    @PermitAll
-    public ResponseEntity<List<ConsultaMedicaDto>> obtenerFichasMedicasPacienteDetalle(@PathVariable int idPaciente) {
-        try{
-            List<ConsultaMedicaDto> consultasMedicas = consultasMedicasService.obtenerConsultasMedicasPaciente(idPaciente);
-            return new ResponseEntity<>(consultasMedicas,HttpStatus.OK);
-        }catch(Exception e){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }   
-    }
+    // @GetMapping("/detalle/paciente/{idPaciente}")
+    // @PermitAll
+    // public ResponseEntity<List<ConsultaMedicaDto>> obtenerFichasMedicasPacienteDetalle(@PathVariable int idPaciente) {
+    //     try{
+    //         List<ConsultaMedicaDto> consultasMedicas = consultasMedicasService.obtenerConsultasMedicasPaciente(idPaciente);
+    //         return new ResponseEntity<>(consultasMedicas,HttpStatus.OK);
+    //     }catch(Exception e){
+    //         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    //     }   
+    // }
     @GetMapping("/info-container")
+    @PermitAll
     public @ResponseBody String obtenerInformacionContenedor() {
         return "microservicio fichas medicas:" + containerMetadataService.retrieveContainerMetadataInfo();
     }
     @GetMapping("/medico/{idMedico}")
-    public ResponseEntity<List<ConsultaMedicaDto>> obtenerConsultasMedicasPorMedico(@PathVariable int idMedico) {
-        List<ConsultaMedicaDto> consultas = consultasMedicasService.obtenerConsultasMedicasPorMedico(idMedico);
-        return ResponseEntity.ok(consultas);
+    @PermitAll
+    public ResponseEntity<List<ConsultaMedicaDto>> obtenerConsultasMedicasPorMedico(@PathVariable int idMedico,@RequestParam(required = false) String fechaInicio,@RequestParam(required = false) String fechaFin,@RequestParam(required = false) Integer page,@RequestParam(required = false) Integer size) {
+        try {
+            List<ConsultaMedicaDto> consultas = consultasMedicasService.obtenerConsultasMedicasPorMedico(idMedico,fechaInicio,fechaFin,page,size);
+            return ResponseEntity.ok(consultas);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        
     }
 
     @PostMapping
+    @PermitAll
     public ResponseEntity<ConsultaMedicaDto> crearConsultaMedica(@RequestBody ConsultaMedicaDto consultaMedicaDto) {
-        ConsultaMedicaDto consultaCreada = consultasMedicasService.crearConsultaMedica(consultaMedicaDto);
-        return ResponseEntity.ok().body(consultaCreada);
-    }
+        try {
+            ConsultaMedicaDto consultaCreada = consultasMedicasService.crearConsultaMedica(consultaMedicaDto);
+            return ResponseEntity.ok().body(consultaCreada);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 
+    }
+    @PutMapping("/{idConsultaMedica}/estado")
+    @PermitAll
+    public ResponseEntity<ConsultaMedicaDto> cambiarEstadoConsultaMedica(@PathVariable int idConsultaMedica,@RequestBody ConsultaMedicaDto consultaMedicaDto) {
+        try {
+            ConsultaMedicaDto consultaActualizada = consultasMedicasService.actualizarEstadoConsultaMedica(idConsultaMedica,consultaMedicaDto);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
     @DeleteMapping("/{idConsultaMedica}")
+    @PermitAll
     public ResponseEntity<ConsultaMedicaDto> eliminarConsultaMedica(@PathVariable int idConsultaMedica) {
         try{
             consultasMedicasService.eliminarConsultaMedica(idConsultaMedica);
@@ -106,9 +134,16 @@ public class ConsultasMedicasController {
     }
 
     @GetMapping("/{idConsultaMedica}")
+    @PermitAll
     public ResponseEntity<ConsultaMedicaDto> obtenerConsultaMedicaPorId(@PathVariable int idConsultaMedica) {
-        ConsultaMedicaDto consulta = consultasMedicasService.obtenerConsultaMedicaPorId(idConsultaMedica);
-        return ResponseEntity.ok().body(consulta);
+        try {
+            ConsultaMedicaDto consulta = consultasMedicasService.obtenerConsultaMedicaPorId(idConsultaMedica);
+            return ResponseEntity.ok().body(consulta);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        
     }
     // @GetMapping("/{idFichaMedica}")
     // @PermitAll
