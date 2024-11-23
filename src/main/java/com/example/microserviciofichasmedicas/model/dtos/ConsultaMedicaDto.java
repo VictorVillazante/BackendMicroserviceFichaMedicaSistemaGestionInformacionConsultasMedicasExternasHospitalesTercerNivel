@@ -13,6 +13,9 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
+import lombok.experimental.Accessors;
+
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 @Getter @Setter
@@ -39,6 +42,7 @@ public class ConsultaMedicaDto {
     String nombreEspecialidad;
     public ConsultaMedicaDto convertirConsultaMedicaEntityConsultaMedicaDto(ConsultaMedicaEntity consultaMedicaEntity){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+
         ConsultaMedicaDto consultaMedicaDto=new ConsultaMedicaDto();
         consultaMedicaDto.setIdConsultaMedica(consultaMedicaEntity.getIdConsultaMedica());
         consultaMedicaDto.setCodigoFichaMedica(consultaMedicaEntity.getCodigoFichaMedica());
