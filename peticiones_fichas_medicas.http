@@ -1,14 +1,21 @@
 ###
-GET http://localhost:8084/api/microservicio-fichas-medicas/fichas-medicas/medico/1
+GET http://localhost:8084/api/microservicio-fichas-medicas/fichas-medicas/medico/3
 ###
 GET http://localhost:8084/api/microservicio-fichas-medicas/fichas-medicas/1
 ###
-POST http://localhost:8084/api/microservicio-fichas-medicas/fichas-medicas
+POST http://localhost:8081/api/microservicio-fichas-medicas/fichas-medicas
 Content-Type: application/json
 
 {
-    "email":"carlossanchez98392847@gmail.com",
+    "idPaciente":1,
     "idTurnoAtencionMedica":1
+}
+###
+PUT http://localhost:8084/api/microservicio-fichas-medicas/fichas-medicas/1/estado
+Content-Type: application/json
+
+{
+    "estado":"FINALIZADO"
 }
 
 ###
