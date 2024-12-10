@@ -16,32 +16,53 @@ import java.util.Arrays;
 import java.util.List;
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+//@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class MainSecurity {
    
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
-        http.cors().configurationSource( request -> {
-            CorsConfiguration corsConfiguration = new CorsConfiguration();
-            corsConfiguration.setAllowedOrigins(List.of("*"));
-            corsConfiguration.setAllowedOriginPatterns(List.of("*"));
-            corsConfiguration.setAllowedMethods(List.of("HEAD","GET","POST","PUT","DELETE","PATCH","OPTIONS"));
-            corsConfiguration.setAllowCredentials(false);
-            corsConfiguration.addExposedHeader("Message");
-            corsConfiguration.setAllowedHeaders(List.of("*"));
-            return corsConfiguration;
-        }).and().csrf().disable()
-                .authorizeRequests()
-                .requestMatchers("/fichas-medicas/*","/fichas-medicas","/fichas-medicas/paciente/*","/fichas-medicas/medico/*","/fichas-medicas/detalle/paciente/*","/**")
-                .permitAll()
-                .anyRequest().authenticated();
+
+        http
+            .cors()
+            .and()
+            .csrf().disable()
+            .authorizeRequests()
+                .requestMatchers("/**").permitAll()
+                .anyRequest().permitAll();
+        return http.build();
+        // http.cors().configurationSource( request -> {
+        //     CorsConfiguration corsConfiguration = new CorsConfiguration();
+        //     // corsConfiguration.setAllowedOrigins(List.of("*"));
+        //     // corsConfiguration.setAllowedOriginPatterns(List.of("*"));
+        //     // corsConfiguration.setAllowedMethods(List.of("HEAD","GET","POST","PUT","DELETE","PATCH","OPTIONS"));
+        //     // corsConfiguration.setAllowCredentials(false);
+        //     // corsConfiguration.addExposedHeader("Message");
+        //     // corsConfiguration.setAllowedHeaders(List.of("*"));
+        //     return corsConfiguration;
+        // }).and().csrf().disable()
+        //         .authorizeRequests()
+        //         .requestMatchers("/fichas-medicas/*","/fichas-medicas","/fichas-medicas/paciente/*","/fichas-medicas/medico/*","/fichas-medicas/detalle/paciente/*","/**")
+        //         .permitAll()
+        //         .anyRequest().authenticated();
         // http.cors().and().csrf().disable()
         //         .authorizeRequests()
         //         .requestMatchers("/fichas-medicas/**","/fichas-medicas","/fichas-medicas/paciente/*","/fichas-medicas/medico/*","/fichas-medicas/detalle/paciente/*","/**")
         //         .permitAll()
         //         .anyRequest().authenticated();
-        return http.build();
+        //return http.build();
     }
+//     @Bean
+// public UrlBasedCorsConfigurationSource corsConfigurationSource() {
+//     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//     CorsConfiguration configuration = new CorsConfiguration();
+//     configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200")); 
+//     configuration.setAllowedMethods(Arrays.asList("HEAD", "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
+//     configuration.setAllowCredentials(true); 
+//     configuration.setAllowedHeaders(List.of("*"));
+//     configuration.addExposedHeader("Message");
+//     source.registerCorsConfiguration("/**", configuration);
+//     return source;
+//     }
     // @Bean
     // public UrlBasedCorsConfigurationSource corsConfigurationSource() {
     //     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

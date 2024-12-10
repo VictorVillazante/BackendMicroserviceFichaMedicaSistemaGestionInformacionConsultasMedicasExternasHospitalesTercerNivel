@@ -1,12 +1,14 @@
 package com.example.microserviciofichasmedicas.model;
 
 import java.util.Date;
+import java.util.Map;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
@@ -18,6 +20,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Getter
 @Setter
@@ -35,6 +39,9 @@ public class EspecialidadesEntity{
     private String nombre;
     @Column(name = "descripcion")
     private String descripcion;
+    @Lob
+    @Column(name = "permisos")
+    private String permisos;
     @Column(name = "fecha_creacion")
     private Date fechaCreacion;
 
@@ -63,5 +70,13 @@ public class EspecialidadesEntity{
     public void markAsDeleted() {
         deletedAt = new Date();
     }
+    public void setPermisosJson(Map<String, Object> permisosJson) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        this.permisos = mapper.writeValueAsString(permisosJson);
+    }
 
+    public Map<String, Object> getPermisosJson() throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.readValue(permisos, Map.class);
+    }
 }

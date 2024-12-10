@@ -34,6 +34,7 @@ public class RequisitosPreviosConsultaMedicaController {
             List<RequisitoPrevioConsultaMedicaDto> requisitos = requisitosPreviosConsultaMedicaService.obtenerRequisitosPrevios();
             return new ResponseEntity<>(requisitos, HttpStatus.OK);
         } catch (Exception e) {
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -44,6 +45,7 @@ public class RequisitosPreviosConsultaMedicaController {
             RequisitoPrevioConsultaMedicaDto requisito = requisitosPreviosConsultaMedicaService.obtenerRequisitoPorId(id);
             return new ResponseEntity<>(requisito, HttpStatus.OK);
         } catch (Exception e) {
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
@@ -54,6 +56,7 @@ public class RequisitosPreviosConsultaMedicaController {
             List<RequisitoPrevioConsultaMedicaDto> requisitos = requisitosPreviosConsultaMedicaService.obtenerRequisitosPreviosPorIdConsultaMedica(idConsultaMedica);
             return new ResponseEntity<>(requisitos, HttpStatus.OK);
         } catch (Exception e) {
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
@@ -68,6 +71,7 @@ public class RequisitosPreviosConsultaMedicaController {
             RequisitoPrevioConsultaMedicaDto requisitoCreado = requisitosPreviosConsultaMedicaService.crearRequisito(requisitoDto, file);
             return new ResponseEntity<>(requisitoCreado, HttpStatus.CREATED);
         } catch (Exception e) {
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
@@ -83,6 +87,7 @@ public class RequisitosPreviosConsultaMedicaController {
             RequisitoPrevioConsultaMedicaDto requisitoActualizado = requisitosPreviosConsultaMedicaService.actualizarRequisito(id, requisitoDto, file);
             return new ResponseEntity<>(requisitoActualizado, HttpStatus.OK);
         } catch (Exception e) {
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
@@ -93,6 +98,7 @@ public class RequisitosPreviosConsultaMedicaController {
             requisitosPreviosConsultaMedicaService.eliminarRequisito(id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception e) {
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }

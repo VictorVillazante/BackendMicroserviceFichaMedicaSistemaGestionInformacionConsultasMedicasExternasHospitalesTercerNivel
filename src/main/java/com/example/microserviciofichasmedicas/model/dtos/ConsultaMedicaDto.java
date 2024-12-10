@@ -26,9 +26,10 @@ public class ConsultaMedicaDto {
     String codigoFichaMedica;
     int numeroFicha;
     String estado;
+    String permisos;
     int idTurnoAtencionMedica;
     String fechaTurnoAtencionMedica;
-    int idPaciente;
+    String idPaciente;
     String nombrePaciente;
     int idConsultorio;
     String nombreConsultorio;
@@ -36,11 +37,11 @@ public class ConsultaMedicaDto {
     String nombreTurno;
     String horaInicio;
     String horaFin;
-    int idMedico;
+    String idMedico;
     String nombreMedico;
     int idEspecialidad;
     String nombreEspecialidad;
-    public ConsultaMedicaDto convertirConsultaMedicaEntityConsultaMedicaDto(ConsultaMedicaEntity consultaMedicaEntity){
+    public static ConsultaMedicaDto convertirConsultaMedicaEntityConsultaMedicaDto(ConsultaMedicaEntity consultaMedicaEntity){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
 
         ConsultaMedicaDto consultaMedicaDto=new ConsultaMedicaDto();
@@ -48,6 +49,7 @@ public class ConsultaMedicaDto {
         consultaMedicaDto.setCodigoFichaMedica(consultaMedicaEntity.getCodigoFichaMedica());
         consultaMedicaDto.setEstado(consultaMedicaEntity.getEstado());
         consultaMedicaDto.setNumeroFicha(consultaMedicaEntity.getNumeroFicha());
+        consultaMedicaDto.setPermisos(consultaMedicaEntity.getTurnoAtencionMedica().getConsultorio().getEspecialidad().getPermisos());
         consultaMedicaDto.setIdTurnoAtencionMedica(consultaMedicaEntity.getTurnoAtencionMedica().getIdTurnoAtencionMedica());
         consultaMedicaDto.setFechaTurnoAtencionMedica(consultaMedicaEntity.getTurnoAtencionMedica().getFecha().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         consultaMedicaDto.setIdPaciente(consultaMedicaEntity.getPaciente().getIdUsuario());

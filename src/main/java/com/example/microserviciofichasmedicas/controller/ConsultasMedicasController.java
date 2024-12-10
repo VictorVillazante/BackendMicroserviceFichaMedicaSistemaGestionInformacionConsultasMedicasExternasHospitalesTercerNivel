@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -62,7 +63,7 @@ public class ConsultasMedicasController {
     // }
     @GetMapping("/paciente/{idPaciente}")
     @PermitAll
-    public ResponseEntity<List<ConsultaMedicaDto>> controllerMethod(@PathVariable int idPaciente,@RequestParam(required = false) String fechaInicio,@RequestParam(required = false) String fechaFin,@RequestParam(required = false) Integer page,@RequestParam(required = false) Integer size) {
+    public ResponseEntity<List<ConsultaMedicaDto>> controllerMethod(@PathVariable String idPaciente,@RequestParam(required = false) String fechaInicio,@RequestParam(required = false) String fechaFin,@RequestParam(required = false) Integer page,@RequestParam(required = false) Integer size) {
         try{
             List<ConsultaMedicaDto> consultasMedicas = consultasMedicasService.obtenerConsultasMedicasPaciente(idPaciente,fechaInicio,fechaFin,page,size);
             return new ResponseEntity<>(consultasMedicas,HttpStatus.OK);
@@ -88,7 +89,7 @@ public class ConsultasMedicasController {
     }
     @GetMapping("/medico/{idMedico}")
     @PermitAll
-    public ResponseEntity<List<ConsultaMedicaDto>> obtenerConsultasMedicasPorMedico(@PathVariable int idMedico,@RequestParam(required = false) String fechaInicio,@RequestParam(required = false) String fechaFin,@RequestParam(required = false) Integer page,@RequestParam(required = false) Integer size) {
+    public ResponseEntity<List<ConsultaMedicaDto>> obtenerConsultasMedicasPorMedico(@PathVariable String idMedico,@RequestParam(required = false) String fechaInicio,@RequestParam(required = false) String fechaFin,@RequestParam(required = false) Integer page,@RequestParam(required = false) Integer size) {
         try {
             List<ConsultaMedicaDto> consultas = consultasMedicasService.obtenerConsultasMedicasPorMedico(idMedico,fechaInicio,fechaFin,page,size);
             return ResponseEntity.ok(consultas);
@@ -111,6 +112,17 @@ public class ConsultasMedicasController {
         }
 
     }
+    @PutMapping("/rechazar-peticiones-fuera-fecha")
+    @PermitAll
+    public ResponseEntity<Void> putMethodName() {
+        try {
+            consultasMedicasService.rechazarPeticionesFueraFecha();
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
     @PutMapping("/{idConsultaMedica}/estado")
     @PermitAll
     public ResponseEntity<ConsultaMedicaDto> cambiarEstadoConsultaMedica(@PathVariable int idConsultaMedica,@RequestBody ConsultaMedicaDto consultaMedicaDto) {
@@ -129,6 +141,7 @@ public class ConsultasMedicasController {
             consultasMedicasService.eliminarConsultaMedica(idConsultaMedica);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -139,6 +152,31 @@ public class ConsultasMedicasController {
         try {
             ConsultaMedicaDto consulta = consultasMedicasService.obtenerConsultaMedicaPorId(idConsultaMedica);
             return ResponseEntity.ok().body(consulta);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        
+    }
+    @GetMapping("consulta-en-curso/{idConsultaMedica}")
+    @PermitAll
+    public ResponseEntity<ConsultaMedicaDto> obtenerConsultaEnCurso(@PathVariable int idConsultaMedica) {
+        try {
+            ConsultaMedicaDto consulta = consultasMedicasService.obtenerConsultaEnCurso(idConsultaMedica);
+            return ResponseEntity.ok().body(consulta);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        
+    }
+
+    @GetMapping("")
+    @PermitAll
+    public ResponseEntity<Page<ConsultaMedicaDto>> obtenerConsultasMedicas(@RequestParam(required = false) String nombreEspecialidad,@RequestParam(required = false) String nombreMedico,@RequestParam(required = false) String nombrePaciente,@RequestParam(required = false) String hora,@RequestParam(required = false) String fechaFin,@RequestParam(required = false) String fechaInicio,@RequestParam(required = false) Integer page,@RequestParam(required = false) Integer size) {
+        try {
+            Page<ConsultaMedicaDto> consultas = consultasMedicasService.obtenerConsultasMedicas(nombreEspecialidad,nombreMedico,nombrePaciente,fechaInicio,fechaFin,hora,page,size);
+            return new ResponseEntity<>(consultas,HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

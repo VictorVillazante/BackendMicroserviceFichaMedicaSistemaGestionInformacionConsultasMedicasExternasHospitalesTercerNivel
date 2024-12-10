@@ -16,7 +16,7 @@ import com.example.microserviciofichasmedicas.repository.RequisitosPreviosConsul
 @Service
 public class RequisitosPreviosConsultaMedicaService {
     @Autowired
-    private ConverterVariablesService converterVariablesService;
+    private ConvertirTiposDatosService converterVariablesService;
 
     @Autowired
     private S3Service s3Service;

@@ -22,7 +22,7 @@ import org.springframework.stereotype.Service;
 public class    S3Service {
 
     @Autowired
-    private ConverterVariablesService converterVariablesService;
+    private ConvertirTiposDatosService converterVariablesService;
     
     @Value("${aws.s3.bucket.name}")
     private String bucketName;

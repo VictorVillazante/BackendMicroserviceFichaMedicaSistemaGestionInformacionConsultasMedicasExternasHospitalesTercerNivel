@@ -1,5 +1,6 @@
 package com.example.microserviciofichasmedicas.repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -67,4 +68,18 @@ public interface ConsultaMedicaRepositoryJPA extends org.springframework.data.jp
     // "WHERE cm.id_paciente = ?1"
     // ,nativeQuery=true)
     // List<ConsultaMedicaEntity> obtenerFichasMedicasPorIdPaciente(int idPaciente);
+    @Query(value="SELECT cm FROM ConsultaMedicaEntity cm "+
+    "JOIN cm.turnoAtencionMedica tam "+
+    "WHERE tam.idTurnoAtencionMedica = ?1 "+
+    "AND cm.estado = 'EN CURSO'")
+    ConsultaMedicaEntity obtenerConsultaEnCurso(int idTurnoAtencionMedica);
+    @Query(value="SELECT cm FROM ConsultaMedicaEntity cm "+
+    "JOIN cm.turnoAtencionMedica tam "+
+    "JOIN cm.paciente p "+
+    "WHERE p.idUsuario = ?1 "+
+    "AND cm.estado = 'PENDIENTE APROBACION' "+
+    "AND tam.idTurnoAtencionMedica = ?2")
+    ConsultaMedicaEntity obtenerConsultasNoAprobadas(String idPaciente,int  idTurnoAtencionMedica);
+    @Query(value = "UPDATE ConsultaMedicaEntity cm SET cm.estado = 'RECHAZADA' WHERE cm.estado = 'PENDIENTE APROBACION' AND cm.turnoAtencionMedica.fecha < ?1")
+    void rechazarPeticionesFueraFecha(LocalDate fecha);
 }

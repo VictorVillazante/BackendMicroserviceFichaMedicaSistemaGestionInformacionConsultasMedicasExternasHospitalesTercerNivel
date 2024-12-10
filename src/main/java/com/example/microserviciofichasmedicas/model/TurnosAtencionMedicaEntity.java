@@ -32,6 +32,8 @@ public class TurnosAtencionMedicaEntity {
     private int idTurnoAtencionMedica;
     @Column(name = "numero_fichas_disponible")
     private int numeroFichasDisponible;
+    @Column(name = "numero_fichas_asignado")
+    private int numeroFichasAsignado;
     @Column(name = "fecha")
     private LocalDate fecha;
     @ManyToOne(fetch = FetchType.LAZY)
