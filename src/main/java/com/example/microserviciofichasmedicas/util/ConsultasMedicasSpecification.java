@@ -27,6 +27,8 @@ public class ConsultasMedicasSpecification {
             return (root, query, criteriaBuilder) -> {
                 Join<ConsultaMedicaEntity, TurnosAtencionMedicaEntity> turnosAtencionMedicaJoin = root.join("turnoAtencionMedica");
                 Predicate predicate = criteriaBuilder.greaterThanOrEqualTo(turnosAtencionMedicaJoin.get("fecha"), minDate);
+                predicate = criteriaBuilder.and(predicate,criteriaBuilder.isNull(root.get("deletedAt")));
+
                 return predicate;
 
             };
@@ -35,22 +37,30 @@ public class ConsultasMedicasSpecification {
         }
     }
 
-    public static Specification<ConsultaMedicaEntity> lessEqualThanFechaFin(String max) {
-        LocalDate maxDate;
-        DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        try {
-            maxDate = LocalDate.parse(max, formato);
-            return (root, query, criteriaBuilder) -> criteriaBuilder.lessThanOrEqualTo(root.get("fecha"), maxDate);
-        } catch (Exception e) {
-            throw new RuntimeException("Fecha inválida");
-        }
-    }
+    // public static Specification<ConsultaMedicaEntity> lessEqualThanFechaFin(String max) {
+    //     LocalDate maxDate;
+    //     DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    //     try {
+    //         maxDate = LocalDate.parse(max, formato);
+    //         return (root, query, criteriaBuilder) -> {
+    //             Predicate predicate = criteriaBuilder.lessThanOrEqualTo(root.get("fecha"), maxDate);
+    //             predicate = criteriaBuilder.and(predicate,criteriaBuilder.isNull(root.get("deletedAt")));
+
+    //             return predicate;
+    //         };
+            
+    //     } catch (Exception e) {
+    //         throw new RuntimeException("Fecha inválida");
+    //     }
+    // }
 
     public static Specification<ConsultaMedicaEntity> obtenerConsultasMedicasPorIdMedico(String idMedico) {
         return (root,query,builder) -> {
             Join<ConsultaMedicaEntity, TurnosAtencionMedicaEntity> turnosAtencionMedicaJoin = root.join("turnoAtencionMedica");
             Join<TurnosAtencionMedicaEntity, UsuarioEntity> medicoJoin = turnosAtencionMedicaJoin.join("medico");
             Predicate predicate = builder.equal(medicoJoin.get("idUsuario"), idMedico);
+            predicate = builder.and(predicate,builder.isNull(root.get("deletedAt")));
+
             return predicate;
         };
     }
@@ -62,6 +72,7 @@ public class ConsultasMedicasSpecification {
                 Join<ConsultaMedicaEntity, TurnosAtencionMedicaEntity> turnosAtencionMedicaJoin = root.join("turnoAtencionMedica");
                 Join<TurnosAtencionMedicaEntity, UsuarioEntity> medicoJoin = turnosAtencionMedicaJoin.join("medico");
                 Predicate predicadoFinal = builder.equal(medicoJoin.get("idUsuario"), idMedico);
+                predicadoFinal = builder.and(predicadoFinal,builder.isNull(root.get("deletedAt")));
                 //predicadoFinal = builder.and(predicadoFinal, builder.equal(root.get("estado"),"APROBADO ADM"));
                 if (min != null) {
                     minDate = LocalDate.parse(min, formato);
@@ -90,7 +101,8 @@ public class ConsultasMedicasSpecification {
                         Join<ConsultaMedicaEntity, TurnosAtencionMedicaEntity> turnosAtencionMedicaJoin = root.join("turnoAtencionMedica");
                         Join<TurnosAtencionMedicaEntity, UsuarioEntity> pacienteJoin = root.join("paciente");
                         Predicate predicadoFinal = builder.equal(pacienteJoin.get("idUsuario"), idPaciente);
-                        
+                        predicadoFinal = builder.and(predicadoFinal,builder.isNull(root.get("deletedAt")));
+
                         if (min != null) {
                             minDate = LocalDate.parse(min, formato);
                             Predicate predicadoFechaMin = builder.greaterThanOrEqualTo(turnosAtencionMedicaJoin.get("fecha"), minDate);

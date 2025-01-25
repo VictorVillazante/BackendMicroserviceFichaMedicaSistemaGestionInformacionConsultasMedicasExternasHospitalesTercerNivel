@@ -1,5 +1,8 @@
 package com.example.microserviciofichasmedicas.model;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+
+import java.util.Date;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -18,38 +21,29 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.Date;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-@Table(name = "turnos_atencion_medica")
-public class TurnosAtencionMedicaEntity {
+@Table(name = "notificaciones_usuarios")
+public class NotificacionUsuarioEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_turno_atencion_medica")
-    private int idTurnoAtencionMedica;
-    @Column(name = "numero_fichas_disponible")
-    private int numeroFichasDisponible;
-    @Column(name = "numero_fichas_asignado")
-    private int numeroFichasAsignado;
-    @Column(name = "fecha")
-    private LocalDate fecha;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_consultorio", nullable = false)
-    private ConsultorioEntity consultorio;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_turno", nullable = false)
-    private TurnoEntity turno;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_medico", nullable = false)
-    private UsuarioEntity medico;
+    @Column(name = "id_notificacion_usuario")
+    private int idNotificacionUsuario;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_notificacion", nullable = false)
+    private NotificacionEntity notificacion;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_usuario", nullable = false)
+    private UsuarioEntity usuario;
+
+    @Column(name = "leido")
+    private Boolean leido;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_at", nullable = false, updatable = false)

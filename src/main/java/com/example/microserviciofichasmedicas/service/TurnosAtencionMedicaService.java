@@ -45,13 +45,13 @@ public class TurnosAtencionMedicaService {
     public TurnoAtencionMedicaDto actualizarTurnoAtencionMedicaDto(TurnoAtencionMedicaDto turnoAtencionMedicaDto) {
                 // SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        TurnoEntity turnoEntity = turnosRepositoryJPA.findById(turnoAtencionMedicaDto.getIdTurno())
+        TurnoEntity turnoEntity = turnosRepositoryJPA.findByIdTurnoAndDeletedAtIsNull(turnoAtencionMedicaDto.getIdTurno())
         .orElseThrow(() -> new RuntimeException("Turno no encontrado"));
         ConsultorioEntity consultorioEntity = consultoriosRepositoryJPA.findByIdConsultorioAndDeletedAtIsNull(turnoAtencionMedicaDto.getIdConsultorio())
         .orElseThrow(() -> new RuntimeException("Consultorio no encontrado"));
         UsuarioEntity medicoEntity = usuarioRepositoryJPA.findByIdUsuarioAndDeletedAtIsNull(turnoAtencionMedicaDto.getIdMedico())
         .orElseThrow(() -> new RuntimeException("Médico no encontrado"));
-        TurnosAtencionMedicaEntity actualizadoEntity = turnosAtencionMedicaRepositoryJPA.findById(turnoAtencionMedicaDto.getIdTurnoAtencionMedica())
+        TurnosAtencionMedicaEntity actualizadoEntity = turnosAtencionMedicaRepositoryJPA.findByIdTurnoAtencionMedicaAndDeletedAtIsNull(turnoAtencionMedicaDto.getIdTurnoAtencionMedica())
         .orElseThrow(() -> new RuntimeException("Turno de atención médica no encontrado"));
         actualizadoEntity.setFecha(LocalDate.parse(turnoAtencionMedicaDto.getFecha(), formato));
         actualizadoEntity.setNumeroFichasDisponible(turnoAtencionMedicaDto.getNumeroFichasDisponible());

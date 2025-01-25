@@ -12,24 +12,59 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import com.example.microserviciofichasmedicas.security.jwt.CustomAccessDeniedHandler;
+import com.example.microserviciofichasmedicas.security.jwt.JwtEntryPoint;
+import com.example.microserviciofichasmedicas.security.jwt.JwtTokenFilter;
+
 import java.util.Arrays;
 import java.util.List;
 @Configuration
 @EnableWebSecurity
-//@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class MainSecurity {
-   
+    @Autowired
+    private JwtEntryPoint jwtEntryPoint;
+
+    @Autowired
+    private CustomAccessDeniedHandler customAccessDeniedHandler;
+
+
+    @Bean
+    public JwtTokenFilter jwtTokenFilter() {
+        return new JwtTokenFilter();
+    }
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
-
         http
-            .cors()
+            .cors()  // Configuración de CORS
             .and()
-            .csrf().disable()
+            .csrf().disable()  // Deshabilitar CSRF para permitir solicitudes sin autenticación
             .authorizeRequests()
-                .requestMatchers("/**").permitAll()
-                .anyRequest().permitAll();
+                .requestMatchers("/auth/*","/manage/*").permitAll()  // Permite todas las rutas sin autenticación
+                .anyRequest().authenticated()
+                .and().exceptionHandling()
+                .accessDeniedHandler(new CustomAccessDeniedHandler()).authenticationEntryPoint(jwtEntryPoint)
+                .and()  
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http.addFilterBefore(jwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);  // Permite cualquier otra solicitud sin autenticación
         return http.build();
+
+        // http
+        //     .cors()
+        //     .and()
+        //     .csrf().disable()
+        //     .authorizeRequests()
+        //         .requestMatchers("/**").permitAll()
+        //         .anyRequest().permitAll();
+        // return http.build();
+
+
+
+        
+
+
+
+
         // http.cors().configurationSource( request -> {
         //     CorsConfiguration corsConfiguration = new CorsConfiguration();
         //     // corsConfiguration.setAllowedOrigins(List.of("*"));

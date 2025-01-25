@@ -1,9 +1,12 @@
 package com.example.microserviciofichasmedicas.repository;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -20,7 +23,6 @@ public interface ConsultaMedicaRepositoryJPA extends org.springframework.data.jp
     "WHERE m.idUsuario = ?1")
     List<ConsultaMedicaEntity> obtenerFichasMedicasPorIdMedico(int idMedico);
 
-    List<ConsultaMedicaEntity> findAllByTurnoAtencionMedica(TurnosAtencionMedicaEntity turnosAtencionMedicaEntity);
      // @Query(value="SELECT cm.codigo_ficha_medica,cm.numero_ficha,c.nombre,t.nombre,m.nombres,e.nombre FROM consultas_medicas cm"+
     // " INNER JOIN turnos_atencion_medica tam ON tam.id_turno_atencion_medica =cm.id_turno_atencion_medica"+
     // " INNER JOIN consultorios c ON tam.id_consultorio =c.id_consultorio"+
@@ -82,4 +84,11 @@ public interface ConsultaMedicaRepositoryJPA extends org.springframework.data.jp
     ConsultaMedicaEntity obtenerConsultasNoAprobadas(String idPaciente,int  idTurnoAtencionMedica);
     @Query(value = "UPDATE ConsultaMedicaEntity cm SET cm.estado = 'RECHAZADA' WHERE cm.estado = 'PENDIENTE APROBACION' AND cm.turnoAtencionMedica.fecha < ?1")
     void rechazarPeticionesFueraFecha(LocalDate fecha);
+
+    @Modifying
+    @Query(value = "UPDATE consultas_medicas SET deleted_at = ?2 WHERE id_turno_atencion_medica = ?1 AND deleted_at IS NULL", nativeQuery = true)
+    void markAsDeletedAllConsultasMedicasFromTurnoAtencionMedica(int idTurnoAtencionMedica, Date date);
+    
+    Optional<ConsultaMedicaEntity> findByIdConsultaMedicaAndDeletedAtIsNull(int idConsultaMedica);
+    List<ConsultaMedicaEntity> findAllByTurnoAtencionMedicaAndDeletedAtIsNull(TurnosAtencionMedicaEntity turnosAtencionMedicaEntity);
 }
