@@ -41,6 +41,9 @@ public class ConsultaMedicaDto {
     String nombreMedico;
     int idEspecialidad;
     String nombreEspecialidad;
+    Date createdAt;
+    Date updatedAt;
+    Date deletedAt;
     public static ConsultaMedicaDto convertirConsultaMedicaEntityConsultaMedicaDto(ConsultaMedicaEntity consultaMedicaEntity){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
 
@@ -64,6 +67,10 @@ public class ConsultaMedicaDto {
         consultaMedicaDto.setNombreMedico(consultaMedicaEntity.getTurnoAtencionMedica().getMedico().getNombres()+" "+consultaMedicaEntity.getTurnoAtencionMedica().getMedico().getApellidoPaterno()+" "+consultaMedicaEntity.getTurnoAtencionMedica().getMedico().getApellidoMaterno());
         consultaMedicaDto.setIdEspecialidad(consultaMedicaEntity.getTurnoAtencionMedica().getConsultorio().getEspecialidad().getIdEspecialidad());
         consultaMedicaDto.setNombreEspecialidad(consultaMedicaEntity.getTurnoAtencionMedica().getConsultorio().getEspecialidad().getNombre());
+        consultaMedicaDto.setCreatedAt(consultaMedicaEntity.getCreatedAt());
+        consultaMedicaDto.setUpdatedAt(consultaMedicaEntity.getUpdatedAt());
+        consultaMedicaDto.setDeletedAt(consultaMedicaEntity.getDeletedAt());
+
         return consultaMedicaDto;
     }
 }

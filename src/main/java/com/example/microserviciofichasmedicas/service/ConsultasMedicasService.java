@@ -103,7 +103,8 @@ public class ConsultasMedicasService {
         TurnoAtencionMedicaDto turnoAtencionActualizado=new TurnoAtencionMedicaDto().convertirTurnoAtencionMedicaEntityTurnoAtencionMedicaDto(turnosAtencionMedicaEntity);
         turnoAtencionActualizado.setNumeroFichasDisponible((turnoAtencionActualizado.getNumeroFichasDisponible()<turnoAtencionActualizado.getNumeroFichasAsignado())?turnoAtencionActualizado.getNumeroFichasDisponible()+1:turnoAtencionActualizado.getNumeroFichasAsignado());
         turnosAtencionMedicaService.actualizarTurnoAtencionMedicaDto(turnoAtencionActualizado);
-        consultaMedicaRepositoryJPA.deleteById(idConsultaMedica);
+        consultaMedicaEntity.markAsDeleted();
+        consultaMedicaRepositoryJPA.save(consultaMedicaEntity);
     }
     private ObjectMapper objectMapper = new ObjectMapper();
     public ConsultaMedicaDto crearConsultaMedica(ConsultaMedicaDto consultaMedicaDto) throws JsonMappingException, JsonProcessingException { 

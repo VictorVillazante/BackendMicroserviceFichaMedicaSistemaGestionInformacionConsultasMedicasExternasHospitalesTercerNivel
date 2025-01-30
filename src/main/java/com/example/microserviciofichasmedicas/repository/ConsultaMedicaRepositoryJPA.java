@@ -21,7 +21,7 @@ public interface ConsultaMedicaRepositoryJPA extends org.springframework.data.jp
     "JOIN cm.turnoAtencionMedica tam "+
     "JOIN tam.medico m "+
     "WHERE m.idUsuario = ?1")
-    List<ConsultaMedicaEntity> obtenerFichasMedicasPorIdMedico(int idMedico);
+    List<ConsultaMedicaEntity> obtenerFichasMedicasPorIdMedico(String idMedico);
 
      // @Query(value="SELECT cm.codigo_ficha_medica,cm.numero_ficha,c.nombre,t.nombre,m.nombres,e.nombre FROM consultas_medicas cm"+
     // " INNER JOIN turnos_atencion_medica tam ON tam.id_turno_atencion_medica =cm.id_turno_atencion_medica"+
